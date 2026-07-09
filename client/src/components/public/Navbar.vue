@@ -4,9 +4,11 @@
 </script>
 
 <template>
-    <nav class="flex md:gap-4 ">
+    <nav class="flex items-center justify-between gap-1 md:gap-4 ">
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/contact">Contact</RouterLink>
-        <ThemeBtn />
+        <div class="w-5">
+            <ThemeBtn />
+        </div>
     </nav>
 </template>
