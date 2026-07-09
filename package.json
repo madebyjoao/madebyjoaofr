@@ -1,0 +1,8 @@
+{
+    "name": "madebyjoao",
+
+    "scripts": {
+        "front": "cd client && npm run dev",
+        "back" : ""
+    }
+}
