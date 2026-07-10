@@ -3,7 +3,6 @@ import TheWelcome from '../components/TheWelcome.vue'
 </script>
 
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+	<!-- no <main> wrapper: the layout owns <main> -->
+	<TheWelcome />
 </template>

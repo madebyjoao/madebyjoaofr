@@ -5,8 +5,8 @@
 
 <template>
     <nav class="flex items-center justify-between gap-1 md:gap-4 ">
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/contact">Contact</RouterLink>
+        <RouterLink :to="{ name: 'home' }">Home</RouterLink>
+        <RouterLink :to="{ name: 'contact' }">Contact</RouterLink>
         <div class="w-5">
             <ThemeBtn />
         </div>
