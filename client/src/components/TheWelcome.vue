@@ -10,11 +10,27 @@ const openReadmeInEditor = () => fetch('/__open-in-editor?file=README.md')
 </script>
 
 <template>
+  <section class="min-h-dvh flex flex-col justify-center px-6">im joao</section>
   <WelcomeItem>
     <template #icon>
       <DocumentationIcon />
     </template>
     <template #heading>Documentation</template>
+    <hr class="border-line" />
+
+    <!-- The CTA button -->
+<a class="inline-flex items-center gap-2 microlabel text-ink
+          border border-line hover:border-line-hover rounded-xs px-4 py-2
+          transition-colors duration-[var(--dur-fast)] ease-out-machined">
+  View work <span class="text-accent">→</span>
+</a>
+<section class="py-16 px-6">
+  <span class="microlabel text-ink-soft">02 / about</span>
+  <h2 class="text-lg mt-4">About</h2>
+</section>
+
+<a href="/" class="transition-colors duration-(--dur-fast) ease-out-machined
+          text-ink hover:text-accent">Contact</a>
 
     Vue’s
     <a href="https://vuejs.org/" target="_blank" rel="noopener">official documentation</a>

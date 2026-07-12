@@ -22,6 +22,22 @@ const router = createRouter({
           component: () => import('../views/ContactView.vue'),
           meta: { fullHeight: true, title: 'Contact' },
         },
+
+        // project detail — one component, N projects
+        {
+          path: 'work/:slug',
+          name: 'project',
+          component: () => import('../views/ProjectView.vue'),
+          meta: { fullHeight: false, title: 'Work' },
+        },
+
+        // 404 page
+        {
+          path: ':pathMatch(.*)*',
+          name: 'not-found',
+          component: () => import('../views/NotFoundView.vue'),
+          meta: { fullHeight: true, title: 'Not found' },
+        },
       ],
     },
 

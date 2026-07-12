@@ -1,8 +1,198 @@
-@import 'tailwindcss';
-@import './base.css';
+/* ==========================================================================
+   madebyjoao.fr — tokens, Tailwind v4 edition
+   Architecture:
+     1. RAW layer      → plain :root vars. NOT in @theme, so Tailwind never
+                         generates utilities for them. Semantic firewall.
+     2. SEMANTIC layer → plain vars swapped by :root.dark (the theme toggle)
+     3. @theme inline  → exposes ONLY semantic names to Tailwind, by live
+                         reference, so bg-surface etc. follow the toggle
+                         with zero dark: prefixes in components.
+   ========================================================================== */
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  font-weight: normal;
+@import 'tailwindcss';
+
+/* Teach the dark: variant to follow the .dark class (useDark) instead of
+   the OS preference. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* --------------------------------------------------------------------------
+   0. Fonts — three files, self-hosted in src/assets/fonts/
+   -------------------------------------------------------------------------- */
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('./fonts/space-grotesk-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('./fonts/space-grotesk-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Space Mono';
+  src: url('./fonts/space-mono-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --------------------------------------------------------------------------
+   1. RAW LAYER — slate ladder + brass. Deliberately outside @theme:
+   no bg-slate-450 utility must ever exist. Components go through semantics.
+   -------------------------------------------------------------------------- */
+:root {
+  --slate-280: oklch(0.28 0.03 245);
+  --slate-350: oklch(0.35 0.04 245);
+  --slate-450: oklch(0.45 0.03 245);
+  --slate-520: oklch(0.52 0.03 245);
+  --slate-680: oklch(0.68 0.03 245);
+  --slate-760: oklch(0.76 0.03 245);
+  --slate-820: oklch(0.82 0.03 245);
+  --slate-880: oklch(0.88 0.02 245);
+  --slate-930: oklch(0.93 0.02 245);
+
+  --brass-720: oklch(0.72 0.12 85);
+}
+
+/* --------------------------------------------------------------------------
+   2. SEMANTIC LAYER — the pointers the theme toggle swaps.
+   Light = mid-tone light (L 0.82). Dark = mid-tone dark (L 0.45).
+   -------------------------------------------------------------------------- */
+:root {
+  --color-background: var(--slate-820);
+  --color-background-soft: var(--slate-880);
+  --color-background-mute: var(--slate-760);
+
+  --color-border-val: oklch(0.28 0.03 245 / 0.25);
+  --color-border-hover-val: oklch(0.28 0.03 245 / 0.5);
+
+  --color-heading: var(--slate-280);
+  --color-text: var(--slate-280);
+  --color-text-soft: oklch(0.28 0.03 245 / 0.7);
+
+  --color-accent-val: var(--brass-720);
+}
+
+:root.dark {
+  --color-background: var(--slate-450);
+  --color-background-soft: var(--slate-520);
+  --color-background-mute: var(--slate-350);
+
+  --color-border-val: oklch(0.93 0.02 245 / 0.25);
+  --color-border-hover-val: oklch(0.93 0.02 245 / 0.5);
+
+  --color-heading: var(--slate-930);
+  --color-text: var(--slate-930);
+  --color-text-soft: oklch(0.93 0.02 245 / 0.7);
+}
+
+/* --------------------------------------------------------------------------
+   3. @theme — what Tailwind is allowed to see. Semantic names only.
+   `inline` keeps them as live var() references, so every generated utility
+   follows the theme toggle automatically. Utilities you get:
+     bg-surface / bg-surface-raised / bg-surface-deep
+     text-ink / text-ink-soft / text-heading
+     bg-accent / text-accent / border-accent
+     border-line / border-line-hover
+   -------------------------------------------------------------------------- */
+@theme inline {
+  --color-surface: var(--color-background);
+  --color-surface-raised: var(--color-background-soft);
+  --color-surface-deep: var(--color-background-mute);
+
+  --color-ink: var(--color-text);
+  --color-ink-soft: var(--color-text-soft);
+  --color-heading: var(--color-heading);
+
+  --color-accent: var(--color-accent-val);
+
+  --color-line: var(--color-border-val);
+  --color-line-hover: var(--color-border-hover-val);
+}
+
+/* Static design tokens — no mode swapping, so a plain @theme block. */
+@theme {
+  /* Type — generates font-sans / font-mono and text-sm … text-2xl.
+     Wipe Tailwind's default palette so no off-system color utility exists. */
+  --color-*: initial;
+  --font-sans: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'Space Mono', monospace;
+
+  --text-sm: 0.8125rem;   /* 13px */
+  --text-base: 1rem;      /* 16px */
+  --text-md: 1.25rem;     /* 20px */
+  --text-lg: 1.5625rem;   /* 25px */
+  --text-xl: 1.9375rem;   /* 31px */
+  --text-2xl: 2.4375rem;  /* 39px */
+
+  /* Motion — generates ease-out-machined for transition utilities. */
+  --ease-out-machined: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Shape — rounded-xs is the site's only radius. */
+  --radius-xs: 2px;
+}
+
+/* Spacing note: Tailwind's default scale is n × 0.25rem, so the 8px grid
+   is already there — DISCIPLINE: even steps only (2, 4, 6, 8, 12, 16). */
+
+/* --------------------------------------------------------------------------
+   4. Tokens Tailwind has no namespace for — plain vars, used via
+   var(...) or arbitrary values like duration-[var(--dur-base)].
+   -------------------------------------------------------------------------- */
+:root {
+  --dur-fast: 150ms;
+  --dur-base: 220ms;
+  --stagger: 70ms;
+
+  --z-nav: 100;
+  --z-overlay: 200;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur-base: 0ms;
+    --stagger: 0ms;
+  }
+}
+
+/* ==========================================================================
+   BASE STYLES
+   ========================================================================== */
+body {
+  min-height: 100vh;
+  color: var(--color-text);
+  background: var(--color-background);
+  transition:
+    color var(--dur-base) var(--ease-out-machined),
+    background-color var(--dur-base) var(--ease-out-machined);
+  line-height: 1.6;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  color: var(--color-heading);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/* --------------------------------------------------------------------------
+   Space Mono's legal roles — enforced by class name, not willpower.
+   -------------------------------------------------------------------------- */
+.microlabel {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
 }
