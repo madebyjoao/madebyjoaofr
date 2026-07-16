@@ -1,5 +1,4 @@
 <template>
-	<!-- h-full works because parent <main> has a definite height in fixed mode -->
 	<div class="h-full flex items-center justify-center">
 		<form class="w-full max-w-md flex flex-col gap-4 p-6">
 			<h1 class="text-2xl font-bold">Contact</h1>

@@ -1,17 +1,17 @@
 <template>
   <section id="hero" class="snap-start min-h-full flex flex-col justify-center px-4 md:px-6">
     <div class="max-w-5xl mx-auto w-full">
-      <span class="tobular text-accent font-medium text-xl">// développeur web — cannes</span>
+      <span class="microlabel text-base text-accent">// développeur web — cannes</span>
 
-      <h1 class="tobular text-6xl mt-6 max-w-4xl ">
-        Besoin d'un site?
+        <h1 class="text-4xl mt-6 max-w-4xl">
+        Besoin d'un site&nbsp;?
         <span class="block mt-2">Je m'occupe de tout.</span>
-      </h1>
+        </h1>
 
-      <p class="text-md text-ink-soft mt-6 max-w-4xl">
-        Sites vitrines et outils sur mesure pour les entreprises
-        qui veulent un travail précis.
-      </p>
+        <p class="text-md text-ink-soft mt-6 max-w-2xl">
+        Sites vitrines et outils sur mesure, du nom de domaine à la mise en ligne —
+        pour tous qui veulent un travail précis.
+        </p>
 
       <RouterLink
         to="/contact"

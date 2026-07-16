@@ -7,7 +7,7 @@ const toggleFooter = () => (isFooterOpen.value = !isFooterOpen.value)
 </script>
 
 <template>
-  <!-- one moving unit: wrapper slides, button rides on its shoulder -->
+
   <div
     class="fixed bottom-0 left-0 w-full z-(--z-nav) transition-transform duration-(--dur-base) ease-out-machined"
     :class="isFooterOpen ? 'translate-y-0' : 'translate-y-full'"
