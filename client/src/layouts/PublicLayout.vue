@@ -22,7 +22,7 @@ const fullHeight = computed(() => route.meta.fullHeight === true)
 		</header>
 		<SideNav v-if="fullHeight" />
 
-		<main class="flex-1 overflow-y-auto no-scrollbar" :class="fullHeight ? 'min-h-0 flex flex-col snap-y snap-mandatory scroll-pt-(--header-h) motion-safe:scroll-smooth' : ''">
+		<main class="flex-1 overflow-y-auto no-scrollbar" :class="fullHeight ? 'min-h-0 flex flex-col snap-y snap-mandatory motion-safe:scroll-smooth' : ''">
 			<RouterView />
 		</main>
 
