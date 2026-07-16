@@ -4,7 +4,8 @@
 
 <template>
 
-   <section id="Presentation test" class="snap-start min-h-full flex flex-col justify-center px-4 md:px-6">
+   <section id="presentation" class="snap-start min-h-full flex flex-col justify-center px-4 md:px-6 bg-(--color-background-soft)">
+
         
         <div class="">
             <div class="">

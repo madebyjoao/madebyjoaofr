@@ -75,6 +75,11 @@
   --color-text-soft: oklch(0.28 0.03 245 / 0.7);
 
   --color-accent-val: var(--brass-720);
+
+  --color-inverse-surface: var(--white);
+  --color-inverse-ink: var(--slate-930);
+  --color-inverse-ink-soft: oklch(0.93 0.02 245 / 0.6);
+  --color-inverse-line-val: oklch(0.93 0.02 245 / 0.2);
 }
 
 :root.dark {
@@ -88,6 +93,7 @@
   --color-heading: var(--slate-930);
   --color-text: var(--slate-930);
   --color-text-soft: oklch(0.93 0.02 245 / 0.7);
+
 }
 
 /* --------------------------------------------------------------------------
@@ -112,6 +118,11 @@
 
   --color-line: var(--color-border-val);
   --color-line-hover: var(--color-border-hover-val);
+
+  --color-inverse: var(--color-inverse-surface);
+  --color-inverse-ink: var(--color-inverse-ink);
+  --color-inverse-ink-soft: var(--color-inverse-ink-soft);
+  --color-inverse-line: var(--color-inverse-line-val);
 }
 
 /* Static design tokens — no mode swapping, so a plain @theme block. */
@@ -150,6 +161,8 @@
 
   --z-nav: 100;
   --z-overlay: 200;
+
+  --header-h: 88px;
 }
 
 @media (prefers-reduced-motion: reduce) {
