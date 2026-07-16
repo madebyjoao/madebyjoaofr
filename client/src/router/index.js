@@ -14,7 +14,7 @@ const router = createRouter({
           path: '',                     // default child → matches "/"
           name: 'home',
           component: HomeView,          // eager: landing page, no delay
-          meta: { fullHeight: true, title: 'Home' },
+          meta: { fullHeight: true, title: 'Accueil' },
         },
         {
           path: 'contact',              // no leading slash!

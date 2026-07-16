@@ -30,7 +30,7 @@ const toggleFooter = () => (isFooterOpen.value = !isFooterOpen.value)
 
     <footer id="site-footer" class="bg-inverse border-t border-inverse-line">
         <div class="max-w-5xl mx-auto px-4 md:px-6 py-6">
-            <p class="microlabel text-inverse-ink-soft">© 2026 madebyjoao — 43.70°N 7.26°E</p>
+            <p class="microlabel text-inverse-ink-soft">© 2026 madebyjoao - 43.55°N 7.01°E</p>
         </div>
     </footer>
   </div>

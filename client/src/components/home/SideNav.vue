@@ -3,8 +3,9 @@ import { ref, onMounted, onUnmounted } from 'vue'
 
 // static data — plain const
 const navItems = [
-  { id: 'hero', label: '01' },
-  { id: 'presentation', label: '02' },
+  { id: 'hero', label: '01', mark: 'Accueil' },
+  { id: 'presentation', label: '02', mark: 'We\'re' },
+  { id: 'faq', label: '03', mark: 'FAQ' },
 ]
 
 // state that changes — ref
@@ -49,7 +50,7 @@ const scrollToSection = (id) => {
             class="tabular text-lg font-medium transition-colors duration-(--dur-fast) ease-out-machined"
             :class="activeId === item.id ? 'text-ink-soft' : 'text-accent hover:text-ink-soft'"
             >
-        {{ item.label }}
+            {{ activeId === item.mark ? item.label : item.mark }}
         </a>
     </nav>
 </template>
