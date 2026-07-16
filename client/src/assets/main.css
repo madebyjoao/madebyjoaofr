@@ -76,7 +76,7 @@
 
   --color-accent-val: var(--brass-720);
 
-  --color-inverse-surface: var(--white);
+  --color-inverse-surface: var(--slate-280);
   --color-inverse-ink: var(--slate-930);
   --color-inverse-ink-soft: oklch(0.93 0.02 245 / 0.6);
   --color-inverse-line-val: oklch(0.93 0.02 245 / 0.2);
