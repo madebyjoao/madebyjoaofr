@@ -4,10 +4,10 @@
 </script>
 
 <template>
-    <nav class="flex items-center justify-between gap-1 md:gap-4 ">
+    <nav class="flex items-center justify-between gap-1 md:gap-4 tabular text-lg">
         <RouterLink :to="{ name: 'home' }">Home</RouterLink>
         <RouterLink :to="{ name: 'contact' }">Contact</RouterLink>
-        <div class="w-5">
+        <div class="flex items-center w-5">
             <ThemeBtn />
         </div>
     </nav>

@@ -24,7 +24,9 @@
 </script>
 
 <template>
-    <button @click="toggleTheme">
+    <button 
+        class="hover:cursor-pointer"
+        @click="toggleTheme">
 
         <Sun color="white"
             size="20"

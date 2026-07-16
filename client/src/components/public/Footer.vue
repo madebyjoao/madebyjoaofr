@@ -13,7 +13,7 @@ const toggleFooter = () => (isFooterOpen.value = !isFooterOpen.value)
     :class="isFooterOpen ? 'translate-y-0' : 'translate-y-full'"
   >
     <button
-      class="absolute -top-12 left-1/2 -translate-x-1/2 p-3
+      class="absolute -top-15 left-1/2 -translate-x-1/2 p-3
              transition-transform duration-(--dur-fast) ease-out-machined
              hover:-translate-y-1"
       :aria-expanded="isFooterOpen"
@@ -21,6 +21,7 @@ const toggleFooter = () => (isFooterOpen.value = !isFooterOpen.value)
       @click="toggleFooter"
     >
       <ChevronUp
+        :size="24"
         class="transition-transform duration-(--dur-base) ease-out-machined"
         :class="isFooterOpen && 'rotate-180'"
       />

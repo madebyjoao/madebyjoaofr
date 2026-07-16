@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useRoute, RouterView } from 'vue-router'
 import Navbar from '@/components/public/Navbar.vue'
 import Footer from '@/components/public/Footer.vue'
+import SideNav from '@/components/home/SideNav.vue'
 
 const route = useRoute()
 const fullHeight = computed(() => route.meta.fullHeight === true)
@@ -15,21 +16,19 @@ const fullHeight = computed(() => route.meta.fullHeight === true)
 	>
 		<header class="fixed top-0 left-0 w-full z-50">
 			<div class="max-w-5xl mx-auto h-(--header-h) flex items-center justify-between px-4 md:px-6">
-				<RouterLink to="/"><img alt="madebyjoao" src="@/assets/logo.svg" width="56" height="56" /></RouterLink>
+				<RouterLink to="/"><img alt="madebyjoao" src="@/assets/logo.svg" width="80" height="80" /></RouterLink>
 				<Navbar />
 			</div>
 		</header>
+		<SideNav />
 
 		<main class="flex-1 overflow-y-auto no-scrollbar" :class="fullHeight ? 'min-h-0 flex flex-col snap-y snap-mandatory scroll-pt-(--header-h) motion-safe:scroll-smooth' : ''">
 			<RouterView />
 		</main>
 
-		<button 
-			class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 p-3 transition-transform hover:-translate-y-1"
-			@click="toggleFooter"
-			>	
-			<Footer />
-		</button>
+		<Footer />
+
+		
 	</div>
 </template>
 
