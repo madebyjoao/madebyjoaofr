@@ -23,6 +23,7 @@ const offers = [
   <section id="services" class="snap-start min-h-full flex flex-col justify-center px-4 md:px-6">
     <div class="max-w-5xl mx-auto w-full">
       <span class="microlabel text-ink-soft">02 / services</span>
+      <hr class="border-line" />
       <h2 class="text-lg mt-4">Ce que je peux faire pour vous</h2>
 
       <div class="grid md:grid-cols-3 gap-4 md:gap-8 mt-12">

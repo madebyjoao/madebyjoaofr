@@ -3,9 +3,10 @@ import { projects } from '@/data/projects'
 </script>
 
 <template>
-  <section id="travaux" class="snap-start min-h-full flex flex-col justify-center px-4 md:px-6">
-    <div class="max-w-5xl mx-auto w-full">
+  <section id="travaux" class="snap-start min-h-full flex flex-col justify-center px-4 md:px-6 ">
+    <div class="max-w-5xl mx-auto w-full md:py-20 md:px-2 overflow-y-scroll">
       <span class="microlabel text-ink-soft">03 / travaux</span>
+      <hr class="border-line" />
       <h2 class="text-lg mt-4">Projets sélectionnés</h2>
 
       <div class="grid md:grid-cols-2 gap-4 md:gap-8 mt-12">
