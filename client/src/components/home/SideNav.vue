@@ -1,5 +1,4 @@
 <script setup>
-import { AngleDoubleUp, Microchip, Question } from '@primeicons/vue';
 import { ref, onMounted, onUnmounted } from 'vue'
 
 

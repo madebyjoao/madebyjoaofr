@@ -16,6 +16,7 @@ const offers = [
     tags: ['audit de l’existant', 'design moderne', 'migration incluse'],
   },
 ]
+
 </script>
 
 <template>
