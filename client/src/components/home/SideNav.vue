@@ -2,7 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 
-const sections = ['hero', 'services', 'faq']
+const sections = ['hero', 'services', 'travaux', 'faq']
 const navItems = sections.map((id, i) => ({
   id,
   label: String(i + 1).padStart(2, '0'),
