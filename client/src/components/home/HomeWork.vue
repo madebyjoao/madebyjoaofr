@@ -4,7 +4,7 @@ import { projects } from '@/data/projects'
 
 <template>
   <section id="travaux" class="snap-start min-h-full flex flex-col justify-center px-4 md:px-6 ">
-    <div class="max-w-5xl mx-auto w-full md:py-20 md:px-2 overflow-y-scroll">
+    <div class="max-w-5xl mx-auto w-full md:py-20 md:px-2 overflow-y-auto">
       <span class="microlabel text-ink-soft">03 / travaux</span>
       <hr class="border-line" />
       <h2 class="text-lg mt-4">Projets sélectionnés</h2>
