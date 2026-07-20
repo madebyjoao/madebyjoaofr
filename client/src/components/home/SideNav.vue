@@ -3,11 +3,11 @@ import { AngleDoubleUp, Microchip, Question } from '@primeicons/vue';
 import { ref, onMounted, onUnmounted } from 'vue'
 
 
-const navItems = [
-	{ id: 'hero', label: '01' },
-	{ id: 'presentation', label: '02' },
-	{ id: 'faq', label: '03' },
-]
+const sections = ['hero', 'services', 'faq']
+const navItems = sections.map((id, i) => ({
+  id,
+  label: String(i + 1).padStart(2, '0'),
+}))
 
 
 const activeId = ref(navItems[0].id)
