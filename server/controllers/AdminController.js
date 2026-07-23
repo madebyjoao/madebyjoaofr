@@ -74,7 +74,7 @@ async function updateRequest(req, res) {
       ],
     });
 
-    return res.status(200).json({ ok: true, fresh });
+    return res.status(200).json({ ok: true, request: fresh });
   } catch (error) {
     console.error("[admin] update failed:", error.message);
     return res.status(500).json({ error: "Mise à jour impossible." });

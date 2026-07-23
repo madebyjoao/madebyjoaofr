@@ -40,25 +40,23 @@ function formatDate(iso) {
 }
 
 // re-fetch whenever the selected id changes — the component is reused, not remounted
-watch(
-  () => props.id,
-  async (id) => {
-    loading.value = true;
-    saved.value = false;
-    loadError.value = "";
-    try {
-      const { data } = await api.get(`/admin/requests/${id}`);
-      request.value = data.request;
-      for (const key of Object.keys(form)) form[key] = data.request[key] ?? "";
-    } catch (err) {
-      loadError.value = "Demande introuvable.";
-      request.value = null;
-    } finally {
-      loading.value = false;
-    }
-  },
-  { immediate: true },
-);
+async function load(id) {
+  loading.value = true;
+  saved.value = false;
+  loadError.value = "";
+  try {
+    const { data } = await api.get(`/admin/requests/${id}`);
+    request.value = data.request;
+    for (const key of Object.keys(form)) form[key] = data.request[key] ?? "";
+  } catch (err) {
+    loadError.value = "Demande introuvable.";
+    request.value = null;
+  } finally {
+    loading.value = false;
+  }
+}
+
+watch(() => props.id, load, { immediate: true });
 
 async function save() {
   saving.value = true;
@@ -67,11 +65,10 @@ async function save() {
   try {
     const payload = {};
     for (const [k, v] of Object.entries(form)) payload[k] = v === "" ? null : v;
-    const { data } = await api.patch(`/admin/requests/${props.id}`, payload);
-    console.log("PATCH RESPONSE:", data);
-    request.value = data.request;
+
+    await api.patch(`/admin/requests/${props.id}`, payload);
+    await load(props.id);      // re-read server truth — the panel always shows what's stored
     saved.value = true;
-    emit("updated", data.request);
   } catch (err) {
     console.error("SAVE ERROR:", err);
     saveError.value = "Enregistrement impossible.";
