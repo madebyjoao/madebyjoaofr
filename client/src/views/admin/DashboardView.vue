@@ -41,8 +41,9 @@ function logout() {
 
 // keep the list in sync when the detail saves
 function onUpdated(fresh) {
-  const i = requests.value.findIndex((r) => r.id === fresh.id);
-  if (i !== -1) requests.value[i] = { ...requests.value[i], ...fresh };
+    if (!fresh?.id) return;
+    const i = requests.value.findIndex((r) => r.id === fresh.id);
+    if (i !== -1) requests.value[i] = { ...requests.value[i], ...fresh };
 }
 
 onMounted(async () => {

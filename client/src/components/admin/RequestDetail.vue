@@ -7,7 +7,8 @@ const emit = defineEmits(["updated"]);
 
 const request = ref(null);
 const loading = ref(true);
-const error = ref("");
+const loadError = ref("");
+const saveError = ref("");
 const saving = ref(false);
 const saved = ref(false);
 
@@ -44,13 +45,13 @@ watch(
   async (id) => {
     loading.value = true;
     saved.value = false;
-    error.value = "";
+    loadError.value = "";
     try {
       const { data } = await api.get(`/admin/requests/${id}`);
       request.value = data.request;
       for (const key of Object.keys(form)) form[key] = data.request[key] ?? "";
     } catch (err) {
-      error.value = "Demande introuvable.";
+      loadError.value = "Demande introuvable.";
       request.value = null;
     } finally {
       loading.value = false;
@@ -62,19 +63,22 @@ watch(
 async function save() {
   saving.value = true;
   saved.value = false;
-  error.value = "";
+  saveError.value = "";
   try {
     const payload = {};
     for (const [k, v] of Object.entries(form)) payload[k] = v === "" ? null : v;
     const { data } = await api.patch(`/admin/requests/${props.id}`, payload);
+    console.log("PATCH RESPONSE:", data);
     request.value = data.request;
     saved.value = true;
     emit("updated", data.request);
   } catch (err) {
-    error.value = "Enregistrement impossible.";
+    console.error("SAVE ERROR:", err);
+    saveError.value = "Enregistrement impossible.";
   } finally {
     saving.value = false;
   }
+  if (saved.value && request.value) emit("updated", request.value);
 }
 
 const inputClass =
@@ -85,7 +89,7 @@ const inputClass =
 <template>
   <div class="bg-surface-raised border border-line rounded-xs p-5">
     <p v-if="loading" class="microlabel text-ink-soft">Chargement…</p>
-    <p v-else-if="!request" class="microlabel text-accent">{{ error }}</p>
+    <p v-else-if="!request" class="microlabel text-accent">{{ loadError }}</p>
 
     <template v-else>
       <!-- client's original inquiry — read-only record -->
@@ -186,7 +190,7 @@ const inputClass =
             <span class="text-accent">→</span>
           </button>
           <span v-if="saved" class="microlabel text-accent">enregistré ✓</span>
-          <span v-if="error" class="microlabel text-accent">{{ error }}</span>
+          <span v-if="saveError" class="microlabel text-accent">{{ saveError }}</span>
         </div>
       </div>
     </template>
