@@ -3,11 +3,13 @@ import contactRouter from "./Contact.route.js";
 import authRouter from "./Auth.route.js";
 import AuthMiddleware from "../middlewares/AuthMiddleware.js";
 import adminContactRouter from "./admin/Contact.route.js";
+import projectRouter from "./Project.route.js";
 
 const router = express.Router();
 
 router.use("/api/contact", contactRouter);
 router.use("/api/auth", authRouter);
+router.use("/api/projects", projectRouter);
 
 // Dashboard Routes
 

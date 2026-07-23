@@ -7,7 +7,7 @@ const offers = [
   },
   {
     title: 'Outil sur mesure',
-    text: "Tableau de bord, gestion, CRM — un outil qui travaille comme vous, pas l'inverse.",
+    text: "Tableau de bord, gestion, CRM : un outil qui travaille comme vous, pas l'inverse.",
     tags: ['interface simple', 'adapté à votre métier', 'évolutif'],
   },
   {
@@ -40,7 +40,7 @@ const offers = [
       </div>
 
       <p class="microlabel text-accent mt-12">
-        Dans tous les cas&nbsp;: nom de domaine, hébergement et mise en ligne — inclus.
+        Dans tous les cas&nbsp;: nom de domaine, hébergement et mise en ligne inclus.
       </p>
     </div>
   </section>

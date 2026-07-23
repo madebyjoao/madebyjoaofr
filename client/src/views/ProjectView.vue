@@ -1,36 +1,48 @@
 <script setup>
-import { computed, watchEffect } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { projects } from '@/data/projects'
+import { computed, ref, watchEffect } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import api from "@/lib/api";
 
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
+const router = useRouter();
 
-// computed, not a one-time lookup: the router REUSES this component
-// between /work/a and /work/b — only the param changes
-const project = computed(() =>
-  projects.find((p) => p.slug === route.params.slug),
-)
+const project = ref(null);
+const loading = ref(true);
+const notFound = ref(false);
 
-// existence check + per-project title, re-run whenever the slug changes
-watchEffect(() => {
-  if (!project.value) {
-    router.replace({ name: 'not-found' }) // replace: dead URL stays out of history
-  } else {
-    document.title = `${project.value.title} — madebyjoao`
+// re-runs when the slug changes — the router reuses this component
+watchEffect(async () => {
+  const slug = route.params.slug;
+  if (!slug) return;
+  loading.value = true;
+  notFound.value = false;
+  try {
+    const { data } = await api.get(`/projects/${slug}`);
+    project.value = data.project;
+    document.title = `${data.project.title} — madebyjoao`;
+  } catch (err) {
+    project.value = null;
+    notFound.value = true;
+  } finally {
+    loading.value = false;
   }
-})
+});
+
+// redirect only once we KNOW it doesn't exist, never while loading
+watchEffect(() => {
+  if (notFound.value) router.replace({ name: "not-found" });
+});
 
 const storyBlocks = computed(() =>
   project.value
     ? [
-        ['contexte', project.value.story.contexte],
-        ['besoin', project.value.story.besoin],
-        ['approche', project.value.story.approche],
-        ['résultat', project.value.story.resultat],
+        ["contexte", project.value.story.contexte],
+        ["besoin", project.value.story.besoin],
+        ["approche", project.value.story.approche],
+        ["résultat", project.value.story.resultat],
       ]
     : [],
-)
+);
 </script>
 
 <template>

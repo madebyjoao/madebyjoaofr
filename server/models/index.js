@@ -1,8 +1,10 @@
 import ContactRequest from "./ContactRequest.js";
 import ContactRequestImage from "./ContactRequestImage.js";
 import ContactRequestEvent from "./ContactRequestEvent.js";
+import Project from "./Project.js";
+import ProjectImage from "./ProjectImage.js";
 
-// a request has many images; each image belongs to one request
+
 ContactRequest.hasMany(ContactRequestImage, {
   foreignKey: "contact_request_id",
   as: "images",
@@ -13,7 +15,7 @@ ContactRequestImage.belongsTo(ContactRequest, {
   as: "request",
 });
 
-// a request has many events; each event belongs to one request
+
 ContactRequest.hasMany(ContactRequestEvent, {
   foreignKey: "contact_request_id",
   as: "events",
@@ -24,4 +26,17 @@ ContactRequestEvent.belongsTo(ContactRequest, {
   as: "request",
 });
 
-export { ContactRequest, ContactRequestImage, ContactRequestEvent };
+Project.hasMany(ProjectImage, {
+  foreignKey: "project_id",
+  as: "images",
+  onDelete: "CASCADE",
+});
+ProjectImage.belongsTo(Project, { foreignKey: "project_id", as: "project" });
+
+export {
+  ContactRequest,
+  ContactRequestImage,
+  ContactRequestEvent,
+  Project,
+  ProjectImage,
+};

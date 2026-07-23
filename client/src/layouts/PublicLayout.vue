@@ -7,6 +7,7 @@ import SideNav from '@/components/home/SideNav.vue'
 
 const route = useRoute()
 const fullHeight = computed(() => route.meta.fullHeight === true)
+const isSnap = computed(() => route.meta.snap === true)
 </script>
 
 <template>
@@ -20,9 +21,14 @@ const fullHeight = computed(() => route.meta.fullHeight === true)
 				<Navbar />
 			</div>
 		</header>
-		<SideNav v-if="fullHeight" />
+		<SideNav v-if="isSnap" />
 
-		<main class="flex-1 overflow-y-auto no-scrollbar" :class="fullHeight ? 'min-h-0 flex flex-col snap-y snap-mandatory motion-safe:scroll-smooth' : ''">
+		<main 
+			class="flex-1 overflow-y-auto no-scrollbar" 
+			:class="[
+				fullHeight ? 'min-h-0 flex flex-col' : '',
+				isSnap ? 'snap-y snap-mandatory motion-safe:scroll-smooth' : ''
+			]">
 			<RouterView />
 		</main>
 

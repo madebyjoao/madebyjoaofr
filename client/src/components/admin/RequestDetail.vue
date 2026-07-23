@@ -11,6 +11,8 @@ const loadError = ref("");
 const saveError = ref("");
 const saving = ref(false);
 const saved = ref(false);
+const uploading = ref(false);
+const imageError = ref("");
 
 const form = reactive({
   status: "", phone: "", phone_secondary: "", address: "", current_website: "",
@@ -78,6 +80,34 @@ async function save() {
   if (saved.value && request.value) emit("updated", request.value);
 }
 
+async function addImage(e) {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  uploading.value = true;
+  imageError.value = "";
+  try {
+    const fd = new FormData();
+    fd.append("sketch", file);
+    await api.post(`/admin/requests/${props.id}/images`, fd);
+    await load(props.id);
+  } catch (err) {
+    imageError.value = "Ajout impossible.";
+  } finally {
+    uploading.value = false;
+    e.target.value = ""; // lets you re-pick the same file
+  }
+}
+
+async function removeImage(imageId) {
+  imageError.value = "";
+  try {
+    await api.delete(`/admin/requests/${props.id}/images/${imageId}`);
+    await load(props.id);
+  } catch (err) {
+    imageError.value = "Suppression impossible.";
+  }
+}
+
 const inputClass =
   "mt-2 w-full bg-surface border border-line rounded-xs px-3 py-2 text-ink " +
   "transition-colors duration-(--dur-fast) ease-out-machined focus:outline-none focus:border-accent";
@@ -102,27 +132,53 @@ const inputClass =
       </p>
       <p class="text-ink mt-4 whitespace-pre-line">{{ request.description }}</p>
 
-      <!-- sketches -->
-      <div v-if="request.images?.length" class="mt-6 border-t border-line pt-6">
-        <span class="microlabel text-ink-soft">// croquis</span>
-        <div class="grid grid-cols-3 gap-3 mt-3">
-          <a
+      <!-- fichiers -->
+      <div class="mt-6 border-t border-line pt-6">
+        <span class="microlabel text-ink-soft">// fichiers</span>
+
+        <div v-if="request.images?.length" class="grid grid-cols-3 gap-3 mt-3">
+          <div
             v-for="img in request.images"
             :key="img.id"
-            :href="`http://localhost:3000/${img.path}`"
-            target="_blank"
-            rel="noopener"
-            class="block border border-line hover:border-accent rounded-xs p-2
-                   transition-colors duration-(--dur-fast) ease-out-machined"
+            class="border border-line rounded-xs p-2"
           >
-            <img
-              v-if="!img.path.endsWith('.pdf')"
-              :src="`http://localhost:3000/${img.path}`"
-              :alt="img.original_name"
-              class="w-full h-20 object-cover rounded-xs"
-            />
-            <p class="microlabel text-ink-soft mt-1 truncate">{{ img.original_name }}</p>
-          </a>
+            <a
+              :href="`http://localhost:3000/${img.path}`"
+              target="_blank"
+              rel="noopener"
+              class="block"
+            >
+              <img
+                v-if="!img.path.endsWith('.pdf')"
+                :src="`http://localhost:3000/${img.path}`"
+                :alt="img.original_name"
+                class="w-full h-20 object-cover rounded-xs"
+              />
+              <p class="microlabel text-ink-soft mt-1 truncate">{{ img.original_name }}</p>
+            </a>
+            <div class="flex items-center justify-between mt-1">
+              <span class="microlabel" :class="img.source === 'admin' ? 'text-ink-soft' : 'text-accent'">
+                {{ img.source === 'admin' ? 'ajouté' : 'client' }}
+              </span>
+              <button
+                @click="removeImage(img.id)"
+                class="microlabel text-ink-soft hover:text-accent
+                       transition-colors duration-(--dur-fast) ease-out-machined"
+              >supprimer</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-4 mt-4">
+          <label
+            class="microlabel text-ink border border-line hover:border-line-hover rounded-xs
+                   px-3 py-2 cursor-pointer transition-colors duration-(--dur-fast) ease-out-machined"
+          >
+            Ajouter un fichier
+            <input type="file" accept=".png,.jpg,.jpeg,.webp,.pdf" class="hidden" @change="addImage" />
+          </label>
+          <span v-if="uploading" class="microlabel text-ink-soft">Envoi…</span>
+          <span v-if="imageError" class="microlabel text-accent">{{ imageError }}</span>
         </div>
       </div>
 

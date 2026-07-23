@@ -10,8 +10,8 @@
 				</h1>
 
 				<p class="text-md text-ink-soft mt-6 max-w-2xl">
-					Sites vitrines et outils sur mesure, du nom de domaine à la mise en ligne —
-					pour tous qui veulent un travail précis.
+					Sites vitrines et outils sur mesure, du nom de domaine à la mise en ligne.
+					Pour les entreprises qui veulent un travail précis.
 				</p>
 
 			<RouterLink

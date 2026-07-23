@@ -1,26 +1,23 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../db.js";
 
-const ContactRequestImage = sequelize.define(
-  "ContactRequestImage",
+const ProjectImage = sequelize.define(
+  "ProjectImage",
   {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    contact_request_id: { type: DataTypes.INTEGER, allowNull: false },
+    project_id: { type: DataTypes.INTEGER, allowNull: false },
     path: { type: DataTypes.STRING(255), allowNull: false },
     original_name: { type: DataTypes.STRING(255), allowNull: true },
-    source: {
-      type: DataTypes.ENUM("client", "admin"),
-      allowNull: false,
-      defaultValue: "client",
-    },
+    alt: { type: DataTypes.STRING(255), allowNull: true },
+    sort_order: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
   },
   {
-    tableName: "contact_request_images",
+    tableName: "project_images",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
     freezeTableName: true,
-  }
+  },
 );
 
-export default ContactRequestImage;
+export default ProjectImage;
