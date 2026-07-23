@@ -1,48 +1,48 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import api from "@/lib/api";
 import { clearToken } from "@/lib/auth";
-import { useRouter } from "vue-router";
+import RequestDetail from "@/components/admin/RequestDetail.vue";
 
+const route = useRoute();
 const router = useRouter();
 
 const requests = ref([]);
 const loading = ref(true);
 const error = ref("");
 
-// pretty labels for the stored values
+const selectedId = computed(() => route.params.id ?? null);
+
 const TYPE_LABELS = {
-  vitrine: "Site vitrine",
-  "sur-mesure": "Outil sur mesure",
-  refonte: "Refonte",
-  autre: "Autre",
+  vitrine: "Site vitrine", "sur-mesure": "Outil sur mesure",
+  refonte: "Refonte", autre: "Autre",
 };
-
 const STATUS_LABELS = {
-  nouveau: "Nouveau",
-  lu: "Lu",
-  en_discussion: "En discussion",
-  devis_envoye: "Devis envoyé",
-  accepte: "Accepté",
-  refuse: "Refusé",
-  archive: "Archivé",
+  nouveau: "Nouveau", lu: "Lu", en_discussion: "En discussion",
+  devis_envoye: "Devis envoyé", accepte: "Accepté",
+  refuse: "Refusé", archive: "Archivé",
 };
-
-const newCount = computed(
-  () => requests.value.filter((r) => r.status === "nouveau").length
-);
 
 function formatDate(iso) {
-  return new Date(iso).toLocaleDateString("fr-FR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
+  return new Date(iso).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" });
 }
 
+function select(id) {
+  router.push({ name: "admin-request", params: { id } });
+}
+function clearSelection() {
+  router.push({ name: "admin-dashboard" });
+}
 function logout() {
   clearToken();
   router.push("/admin/login");
+}
+
+// keep the list in sync when the detail saves
+function onUpdated(fresh) {
+  const i = requests.value.findIndex((r) => r.id === fresh.id);
+  if (i !== -1) requests.value[i] = { ...requests.value[i], ...fresh };
 }
 
 onMounted(async () => {
@@ -58,69 +58,65 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section class="px-4 md:px-6 py-12">
-    <div class="max-w-5xl mx-auto w-full">
-      <!-- header -->
+  <section class="px-4 md:px-6 py-8">
+    <div class="max-w-6xl mx-auto w-full">
       <div class="flex items-center justify-between">
         <div>
           <span class="microlabel text-ink-soft">// administration</span>
           <h1 class="text-lg mt-2">Demandes</h1>
         </div>
-        <button
-          @click="logout"
+        <button @click="logout"
           class="microlabel text-ink-soft hover:text-accent
-                 transition-colors duration-(--dur-fast) ease-out-machined"
-        >
+                 transition-colors duration-(--dur-fast) ease-out-machined">
           Déconnexion
         </button>
       </div>
 
-      <!-- counters -->
-      <p v-if="!loading && !error" class="microlabel text-ink-soft mt-6">
-        <span class="tabular">{{ requests.length }}</span> demande(s) —
-        <span class="text-accent tabular">{{ newCount }}</span> nouvelle(s)
-      </p>
+      <p v-if="loading" class="microlabel text-ink-soft mt-10">Chargement…</p>
+      <p v-else-if="error" class="microlabel text-accent mt-10">{{ error }}</p>
 
-      <!-- states -->
-      <p v-if="loading" class="microlabel text-ink-soft mt-12">Chargement…</p>
-      <p v-else-if="error" class="microlabel text-accent mt-12">{{ error }}</p>
-      <p v-else-if="!requests.length" class="text-ink-soft mt-12">
-        Aucune demande pour le moment.
-      </p>
-
-      <!-- the list -->
-      <div v-else class="mt-8 space-y-3">
-        <article
-          v-for="request in requests"
-          :key="request.id"
-          class="bg-surface-raised border border-line hover:border-line-hover rounded-xs p-5
-                 transition-colors duration-(--dur-fast) ease-out-machined"
-        >
-          <div class="flex items-start justify-between gap-4">
-            <div class="min-w-0">
-              <div class="flex items-center gap-3">
-                <span class="microlabel tabular text-ink-soft">#{{ request.id }}</span>
-                <span
-                  class="microlabel"
-                  :class="request.status === 'nouveau' ? 'text-accent' : 'text-ink-soft'"
-                >{{ STATUS_LABELS[request.status] }}</span>
+      <div v-else class="grid md:grid-cols-[280px_1fr] gap-6 mt-8">
+        <!-- LIST (hidden on mobile when a lead is open) -->
+        <div :class="selectedId ? 'hidden md:block' : 'block'">
+          <p class="microlabel text-ink-soft mb-3">
+            <span class="tabular">{{ requests.length }}</span> demande(s)
+          </p>
+          <div class="space-y-2">
+            <button
+              v-for="r in requests" :key="r.id"
+              @click="select(r.id)"
+              class="w-full text-left bg-surface-raised border rounded-xs p-3
+                     transition-colors duration-(--dur-fast) ease-out-machined"
+              :class="String(r.id) === String(selectedId)
+                ? 'border-accent' : 'border-line hover:border-line-hover'"
+            >
+              <div class="flex items-center justify-between gap-2">
+                <span class="microlabel"
+                  :class="r.status === 'nouveau' ? 'text-accent' : 'text-ink-soft'">
+                  {{ STATUS_LABELS[r.status] }}
+                </span>
+                <span class="microlabel tabular text-ink-soft">{{ formatDate(r.created_at) }}</span>
               </div>
-
-              <h2 class="text-md mt-2">{{ request.nom }}</h2>
-              <p class="microlabel text-ink-soft mt-1">
-                {{ TYPE_LABELS[request.type] }} — {{ request.email }}
-              </p>
-              <p class="text-ink-soft mt-3 line-clamp-2">{{ request.description }}</p>
-            </div>
-
-            <div class="text-right shrink-0">
-              <p class="microlabel tabular text-ink-soft">{{ formatDate(request.created_at) }}</p>
-              <p v-if="request.images.length" class="microlabel text-accent mt-2">
-                <span class="tabular">{{ request.images.length }}</span> croquis
-              </p>
-            </div>
+              <p class="text-ink mt-1 truncate">{{ r.nom }}</p>
+              <p class="microlabel text-ink-soft truncate">{{ TYPE_LABELS[r.type] }}</p>
+            </button>
           </div>
-        </article>
+        </div>
+
+        <!-- DETAIL -->
+        <div :class="selectedId ? 'block' : 'hidden md:block'">
+          <button v-if="selectedId" @click="clearSelection"
+            class="microlabel text-ink-soft hover:text-accent md:hidden mb-3
+                   transition-colors duration-(--dur-fast) ease-out-machined">
+            ← Retour à la liste
+          </button>
+
+          <RequestDetail v-if="selectedId" :id="selectedId" @updated="onUpdated" />
+
+          <div v-else class="border border-line border-dashed rounded-xs p-10 text-center">
+            <p class="microlabel text-ink-soft">Sélectionnez une demande</p>
+          </div>
+        </div>
       </div>
     </div>
   </section>

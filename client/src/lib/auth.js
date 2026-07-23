@@ -3,7 +3,21 @@ import { ref, computed } from "vue";
 const TOKEN_KEY = "mbj_admin_token";
 
 
-const token = ref(localStorage.getItem(TOKEN_KEY));
+function isExpired(jwtString) {
+  try {
+    const payload = JSON.parse(atob(jwtString.split(".")[1]));
+    return payload.exp * 1000 < Date.now();
+  } catch {
+    return true;
+  }
+}
+
+
+const stored = localStorage.getItem(TOKEN_KEY);
+if (stored && isExpired(stored)) {
+  localStorage.removeItem(TOKEN_KEY);
+}
+const token = ref(stored && !isExpired(stored) ? stored : null);
 
 export const isLoggedIn = computed(() => !!token.value);
 

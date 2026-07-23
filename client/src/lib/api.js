@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getToken, clearToken } from "./auth";
+import router from "@/router"; 
 
 const api = axios.create({
     baseURL: "/api",
@@ -18,9 +19,9 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401 && getToken()) {
-        clearToken();
-        window.location.href = "/admin/login";
-        }
+            clearToken();
+            router.push({ name: "admin-login" });
+            }
         return Promise.reject(error);
     }
 );
