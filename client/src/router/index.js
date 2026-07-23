@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import PublicLayout from '../layouts/PublicLayout.vue'
 import HomeView from '../views/HomeView.vue'
+import { isLoggedIn } from '@/lib/auth'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,19 +44,25 @@ const router = createRouter({
     },
 
     // ═══ ZONE 2: admin ════════════════════════════════════════
+	{
+		path: '/admin/login',
+		name: 'admin-login',
+		component: () => import('../views/admin/LoginView.vue'),
+		meta: { title: 'Connexion' },
+	},
     {
-      path: '/admin',
-      component: () => import('../layouts/AdminLayout.vue'), // lazy zone
-      meta: { requiresAuth: true },     // inherited by every child below
-      children: [
+		path: '/admin',
+		component: () => import('../layouts/AdminLayout.vue'),
+		meta: { requiresAuth: true },
+		children: [
         {
-          path: '',                     // default child → matches "/admin"
+          path: '',
           name: 'admin-dashboard',
           component: () => import('../views/admin/DashboardView.vue'),
           meta: { title: 'Dashboard' },
         },
         {
-          path: 'users',                // → matches "/admin/users"
+          path: 'users',
           name: 'admin-users',
           component: () => import('../views/admin/UsersView.vue'),
           meta: { title: 'Users' },
@@ -64,19 +72,23 @@ const router = createRouter({
   ],
 })
 
-// One guard protects the whole admin zone (meta inherited from parent)
+
 router.beforeEach((to) => {
-  const isLoggedIn = true   // TODO: replace with real auth check
-  if (to.meta.requiresAuth && !isLoggedIn) {
-    return { name: 'home' } // or a future { name: 'login' }
-  }
+
+	if (to.meta.requiresAuth && !isLoggedIn.value) {
+		return { name: 'admin-login' }
+	}
+
+	if (to.name === 'admin-login' && isLoggedIn.value) {
+		return { name: 'admin-dashboard' }
+	}
 })
 
-// Bonus from the PDF (p. 29): page titles from meta
+
 router.afterEach((to) => {
-  document.title = to.meta.title
-    ? `${to.meta.title} · madebyjoao`
-    : 'madebyjoao'
+	document.title = to.meta.title
+		? `${to.meta.title} · madebyjoao`
+		: 'madebyjoao'
 })
 
 export default router

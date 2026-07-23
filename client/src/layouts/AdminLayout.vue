@@ -3,7 +3,7 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-  <
+  
   <div class="h-dvh overflow-hidden grid grid-cols-[220px_1fr] grid-rows-[auto_1fr]">
 
     

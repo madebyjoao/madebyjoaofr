@@ -3,7 +3,7 @@
 
     "scripts": {
         "front": "cd client && npm run dev",
-        "back": "",
+        "back": "cd server && npm run dev",
         "install": "cd client && npm install" 
     }
 }
