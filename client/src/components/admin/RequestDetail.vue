@@ -109,16 +109,19 @@ const inputClass =
       <div v-if="request.images?.length" class="mt-6 border-t border-line pt-6">
         <span class="microlabel text-ink-soft">// croquis</span>
         <div class="grid grid-cols-3 gap-3 mt-3">
-          
-            v-for="img in request.images" :key="img.id"
-            :href="`http://localhost:3000/${img.path}`" target="_blank" rel="noopener"
+          <a
+            v-for="img in request.images"
+            :key="img.id"
+            :href="`http://localhost:3000/${img.path}`"
+            target="_blank"
+            rel="noopener"
             class="block border border-line hover:border-accent rounded-xs p-2
                    transition-colors duration-(--dur-fast) ease-out-machined"
           >
-          <a>
             <img
               v-if="!img.path.endsWith('.pdf')"
-              :src="`http://localhost:3000/${img.path}`" :alt="img.original_name"
+              :src="`http://localhost:3000/${img.path}`"
+              :alt="img.original_name"
               class="w-full h-20 object-cover rounded-xs"
             />
             <p class="microlabel text-ink-soft mt-1 truncate">{{ img.original_name }}</p>
