@@ -4,6 +4,7 @@ import authRouter from "./Auth.route.js";
 import AuthMiddleware from "../middlewares/AuthMiddleware.js";
 import adminContactRouter from "./admin/Contact.route.js";
 import projectRouter from "./Project.route.js";
+import adminProjectRouter from "./admin/Project.route.js";
 
 const router = express.Router();
 
@@ -18,5 +19,6 @@ router.get("/api/admin/ping", AuthMiddleware, (req, res) =>
 );
 
 router.use("/api/admin/requests", AuthMiddleware, adminContactRouter);
+router.use("/api/admin/projects", AuthMiddleware, adminProjectRouter);
 
 export default router;
