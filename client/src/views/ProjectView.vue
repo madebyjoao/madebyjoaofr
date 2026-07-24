@@ -47,24 +47,58 @@ const storyBlocks = computed(() =>
 
 <template>
   <article v-if="project" class="px-4 md:px-6 py-18">
-    <div class="max-w-5xl mx-auto">
+    <div class="max-w-6xl mx-auto">
       <span class="microlabel text-ink-soft">{{ project.client }} — {{ project.year }}</span>
       <h1 class="text-xl mt-4">{{ project.title }}</h1>
       <p class="text-md text-ink-soft mt-4 max-w-2xl">{{ project.summary }}</p>
 
-      <div class="mt-16 space-y-12 max-w-2xl">
-        <div v-for="[label, text] in storyBlocks" :key="label">
-          <h2 class="microlabel text-accent">{{ label }}</h2>
-          <p class="text-ink mt-4">{{ text }}</p>
+      <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 mt-16">
+        <!-- récit -->
+        <div class="space-y-10">
+          <div v-for="[label, text] in storyBlocks" :key="label">
+            <h2 class="microlabel text-accent">{{ label }}</h2>
+            <p class="text-ink mt-3">{{ text }}</p>
+          </div>
+
+          <p class="microlabel">
+            <a
+              :href="project.link" target="_blank" rel="noopener"
+              class="text-ink hover:text-accent
+                     transition-colors duration-(--dur-fast) ease-out-machined"
+            >
+              Visiter le site <span class="text-accent">→</span>
+            </a>
+          </p>
+        </div>
+
+        <!-- galerie : 1 grande + 4 petites, reste visible pendant la lecture -->
+        <div v-if="project.images?.length" class="lg:sticky lg:top-28 lg:self-start">
+          <a
+            :href="project.images[0]" target="_blank" rel="noopener"
+            class="block border border-line hover:border-accent rounded-xs overflow-hidden
+                   transition-colors duration-(--dur-fast) ease-out-machined"
+          >
+            <img
+              :src="project.images[0]" :alt="`${project.title}, aperçu principal`"
+              class="w-full aspect-video object-cover"
+            />
+          </a>
+
+          <div v-if="project.images.length > 1" class="grid grid-cols-4 gap-3 mt-3">
+            <a
+              v-for="(img, i) in project.images.slice(1, 5)" :key="img"
+              :href="img" target="_blank" rel="noopener"
+              class="block border border-line hover:border-accent rounded-xs overflow-hidden
+                     transition-colors duration-(--dur-fast) ease-out-machined"
+            >
+              <img
+                :src="img" :alt="`${project.title}, aperçu ${i + 2}`"
+                class="w-full aspect-4/3 object-cover"
+              />
+            </a>
+          </div>
         </div>
       </div>
-
-      <p class="microlabel mt-16">
-        <a :href="project.link" target="_blank" rel="noopener" class="text-ink hover:text-accent
-           transition-colors duration-(--dur-fast) ease-out-machined">
-          Visiter le site <span class="text-accent">→</span>
-        </a>
-      </p>
     </div>
   </article>
 </template>

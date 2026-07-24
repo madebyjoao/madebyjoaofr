@@ -10,7 +10,7 @@ function toggle(i) {
 const faq = [
   {
     q: "Combien coûte un site ?",
-    a: "Un site vitrine simple, avec accueil, présentation et contact, démarre à 1 000 €. À partir de cinq pages, comptez 1 200 €. Vous recevez un devis fixe avant qu'on commence : pas de surprise en cours de route.",
+    a: "Un site vitrine simple, avec accueil, présentation et contact, démarre à 800 €. Vous recevez un devis fixe avant qu'on commence : pas de surprise en cours de route.",
   },
   {
     q: "Combien de temps faut-il ?",
