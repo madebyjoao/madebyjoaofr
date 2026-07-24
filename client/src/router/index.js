@@ -67,6 +67,18 @@ const router = createRouter({
           component: () => import('../views/admin/DashboardView.vue'),
           meta: { title: 'Demande' },
 		    },
+        {
+          path: 'projets',
+          name: 'admin-projects',
+          component: () => import('../views/admin/ProjectsView.vue'),
+          meta: { title: 'Projets' },
+        },
+        {
+          path: 'projets/:id',
+          name: 'admin-project',
+          component: () => import('../views/admin/ProjectEditView.vue'),
+          meta: { title: 'Projet' },
+        },
       ],
     },
   ],

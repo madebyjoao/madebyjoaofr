@@ -143,14 +143,14 @@ const inputClass =
             class="border border-line rounded-xs p-2"
           >
             <a
-              :href="`http://localhost:3000/${img.path}`"
+              :href="`/${img.path}`"
               target="_blank"
               rel="noopener"
               class="block"
             >
               <img
                 v-if="!img.path.endsWith('.pdf')"
-                :src="`http://localhost:3000/${img.path}`"
+                :src="`/${img.path}`"
                 :alt="img.original_name"
                 class="w-full h-20 object-cover rounded-xs"
               />

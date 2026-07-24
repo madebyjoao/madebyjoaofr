@@ -10,6 +10,7 @@ import { RouterLink, RouterView } from 'vue-router'
     <aside class="row-span-2 flex flex-col gap-2 p-4 bg-zinc-900 text-zinc-100">
       <p class="font-bold mb-4">Admin</p>
       <RouterLink :to="{ name: 'admin-dashboard' }">Dashboard</RouterLink>
+      <RouterLink :to="{ name: 'admin-projects' }">Projets</RouterLink>
       <RouterLink :to="{ name: 'home' }" class="mt-auto">← Back to site</RouterLink>
     </aside>
 
